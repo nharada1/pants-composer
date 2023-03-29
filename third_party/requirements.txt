@@ -1,0 +1,8 @@
+numpy
+torch
+torchtext==0.14.0
+torchdata
+torchvision==0.14.1
+tqdm
+mosaicml[streaming]
+setuptools

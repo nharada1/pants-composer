@@ -1,0 +1,18 @@
+[GLOBAL]
+pants_version = "2.15.0"
+backend_packages = [
+  "pants.backend.python",
+]
+
+[anonymous-telemetry]
+enabled = false
+
+[python-repos]
+indexes.add = ["https://download.pytorch.org/whl/cu116"]
+
+[python]
+interpreter_constraints = ["CPython==3.9.*"]
+enable_resolves = true
+
+[python.resolves]
+python-default = "third_party/lockfile_path.txt" 
