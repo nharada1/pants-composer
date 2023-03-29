@@ -45,8 +45,8 @@ def main():
         model=model,
         train_dataloader=train_loader,
         optimizers=model.optim,
-        max_duration=50,  # epochs
-        device="cpu",
+        max_duration="100000ba",
+        device="gpu",
     )
 
     trainer.fit()
