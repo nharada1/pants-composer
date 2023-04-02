@@ -7,6 +7,7 @@ pex_binary(
     dependencies=[
       "third_party:reqs#setuptools",
       "third_party:reqs#torch",
+      "third_party:reqs#imageio",
       "third_party:reqs#torchvision",
     ]
 )

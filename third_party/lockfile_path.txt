@@ -9,6 +9,7 @@
 //     "CPython==3.9.*"
 //   ],
 //   "generated_with_requirements": [
+//     "imageio",
 //     "mosaicml[streaming]",
 //     "numpy",
 //     "setuptools",
@@ -836,6 +837,76 @@
           "requires_dists": [],
           "requires_python": ">=3.5",
           "version": "3.4"
+        },
+        {
+          "artifacts": [
+            {
+              "algorithm": "sha256",
+              "hash": "24c6ad7d000e64eacc2861c402b6fb128f370cb0a6623cf796d83bca0d0d14d3",
+              "url": "https://files.pythonhosted.org/packages/ad/5b/fa636ec082247ffc250c2a16bb262f3405654cbb098a70996d99d59677eb/imageio-2.27.0-py3-none-any.whl"
+            },
+            {
+              "algorithm": "sha256",
+              "hash": "ee269c957785ef0373cc7a7323185956d83ec05e6cdf20b42a03ba7b74ac58c6",
+              "url": "https://files.pythonhosted.org/packages/b5/d5/4c72159bfabe71b083bf497ab9054d3cdade154b79effee8d5b6b81c144c/imageio-2.27.0.tar.gz"
+            }
+          ],
+          "project_name": "imageio",
+          "requires_dists": [
+            "astropy; extra == \"all-plugins\"",
+            "astropy; extra == \"fits\"",
+            "astropy; extra == \"full\"",
+            "av; extra == \"all-plugins\"",
+            "av; extra == \"all-plugins-pypy\"",
+            "av; extra == \"full\"",
+            "av; extra == \"pyav\"",
+            "black; extra == \"dev\"",
+            "black; extra == \"full\"",
+            "black; extra == \"linting\"",
+            "flake8; extra == \"dev\"",
+            "flake8; extra == \"full\"",
+            "flake8; extra == \"linting\"",
+            "fsspec[github]; extra == \"dev\"",
+            "fsspec[github]; extra == \"full\"",
+            "fsspec[github]; extra == \"test\"",
+            "gdal; extra == \"full\"",
+            "gdal; extra == \"gdal\"",
+            "imageio-ffmpeg; extra == \"all-plugins\"",
+            "imageio-ffmpeg; extra == \"all-plugins-pypy\"",
+            "imageio-ffmpeg; extra == \"ffmpeg\"",
+            "imageio-ffmpeg; extra == \"full\"",
+            "invoke; extra == \"dev\"",
+            "invoke; extra == \"full\"",
+            "invoke; extra == \"test\"",
+            "itk; extra == \"full\"",
+            "itk; extra == \"itk\"",
+            "numpy",
+            "numpydoc; extra == \"docs\"",
+            "numpydoc; extra == \"full\"",
+            "pillow>=8.3.2",
+            "psutil; extra == \"all-plugins\"",
+            "psutil; extra == \"all-plugins-pypy\"",
+            "psutil; extra == \"ffmpeg\"",
+            "psutil; extra == \"full\"",
+            "pydata-sphinx-theme; extra == \"docs\"",
+            "pydata-sphinx-theme; extra == \"full\"",
+            "pytest-cov; extra == \"dev\"",
+            "pytest-cov; extra == \"full\"",
+            "pytest-cov; extra == \"test\"",
+            "pytest; extra == \"dev\"",
+            "pytest; extra == \"full\"",
+            "pytest; extra == \"test\"",
+            "sphinx<6; extra == \"docs\"",
+            "sphinx<6; extra == \"full\"",
+            "tifffile; extra == \"all-plugins\"",
+            "tifffile; extra == \"all-plugins-pypy\"",
+            "tifffile; extra == \"full\"",
+            "tifffile; extra == \"tifffile\"",
+            "wheel; extra == \"build\"",
+            "wheel; extra == \"full\""
+          ],
+          "requires_python": ">=3.7",
+          "version": "2.27.0"
         },
         {
           "artifacts": [
@@ -3060,6 +3131,7 @@
   "pip_version": "20.3.4-patched",
   "prefer_older_binary": false,
   "requirements": [
+    "imageio",
     "mosaicml[streaming]",
     "numpy",
     "setuptools",

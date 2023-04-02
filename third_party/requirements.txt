@@ -5,4 +5,5 @@ torchdata
 torchvision==0.14.1
 tqdm
 mosaicml[streaming]
+imageio
 setuptools
