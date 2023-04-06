@@ -24,7 +24,7 @@ class FakeDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
         x = np.zeros(self.shape).astype(np.float32)
-        y = np.random.randint(low=0, high=self.n_classes, size=(1,)).astype(np.int32)
+        y = np.random.randint(low=0, high=self.n_classes, size=(1,)).astype(np.int64)
 
         if self.transform:
             x = self.transform(x)
@@ -84,9 +84,20 @@ def main(args):
     local_dir = args.local
     remote_dir = None
 
-    trainset = CustomDataset(local=local_dir, remote=remote_dir, transform=transform)
+    if args.fake:
+        trainset = FakeDataset(size=100_000, image_size=(8, 256, 256), num_classes=62)
+        sampler = dist.get_sampler(trainset)
+    else:
+        trainset = CustomDataset(
+            local=local_dir, remote=remote_dir, transform=transform
+        )
+        sampler = None
+
     train_loader = torch.utils.data.DataLoader(
-        trainset, batch_size=batch_size, num_workers=8
+        trainset,
+        batch_size=batch_size,
+        num_workers=8,
+        sampler=sampler,
     )
 
     model = ResNet()
@@ -106,6 +117,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--local", type=str, help="The path for the local directory.")
+    parser.add_argument("--fake", action="store_true", help="Use fake data.")
     args = parser.parse_args()
 
     main(args)
