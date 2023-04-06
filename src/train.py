@@ -57,7 +57,7 @@ def main(args):
     )
 
     transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Resize((256, 256)), transforms.RandomCrop((256, 256)), transforms.Normalize(mean, std)]
+        [transforms.ToTensor(), transforms.Resize(256), transforms.RandomCrop((256, 256)), transforms.Normalize(mean, std)]
     )
     local_dir = args.local
     remote_dir = None
