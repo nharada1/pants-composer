@@ -17,7 +17,7 @@ from streaming import StreamingDataset
 class ResNet(ComposerModel):
     def __init__(self):
         super().__init__()
-        self.model = torchvision.models.resnet50(num_classes=63)
+        self.model = torchvision.models.resnet50(num_classes=62)
         self.optim = torch.optim.Adam(self.model.parameters(), lr=0.01)
 
     def forward(self, batch):
