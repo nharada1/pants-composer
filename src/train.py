@@ -47,7 +47,7 @@ class CustomDataset(StreamingDataset):
         return image, label
 
 
-def main():
+def main(args):
     batch_size = 32
     mean=np.array(
         [349.23, 339.76, 378.58, 418.42, 275.86, 431.82, 495.65, 435.05]
@@ -59,16 +59,10 @@ def main():
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Resize((256, 256)), transforms.Normalize(mean, std)]
     )
-    local_dir = "/home/nharada/Datasets/remote_sensing/materialized/mds/fmow_full_resized/val"
+    local_dir = args.local
     remote_dir = None
 
     trainset = CustomDataset(local=local_dir, remote=remote_dir, transform=transform)
-    '''
-    transform = transforms.Compose(
-        [transforms.ToTensor()]
-    )
-    trainset = torchvision.datasets.FakeData(size=100000, image_size=(3, 256, 256), num_classes=63, transform=transform)
-    '''
     train_loader = torch.utils.data.DataLoader(
         trainset, batch_size=batch_size, num_workers=8
     )
@@ -86,4 +80,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--local', type=str, help='The path for the local directory.')
+    args = parser.parse_args()
+
+    main(args)
