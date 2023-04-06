@@ -7,3 +7,4 @@ tqdm
 mosaicml[streaming]
 imageio
 setuptools
+moonshine

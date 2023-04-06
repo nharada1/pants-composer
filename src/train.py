@@ -12,9 +12,11 @@ from composer.models import ComposerModel
 from composer import Trainer
 from composer.utils import dist
 
-from streaming import StreamingDataset
+from moonshine.models.unet import UNet as MSUNet
 
+from streaming import StreamingDataset # pants: no-infer-dep
 
+# Datasets
 class FakeDataset(torch.utils.data.Dataset):
     def __init__(self, size, image_size, num_classes, transform=None):
         self.size = size
@@ -23,7 +25,7 @@ class FakeDataset(torch.utils.data.Dataset):
         self.transform = transform
 
     def __getitem__(self, index):
-        x = np.zeros(self.shape).astype(np.float32)
+        x = np.random.randint(low=0, high=3000, size=self.shape).astype(np.float16)
         y = np.random.randint(low=0, high=self.n_classes, size=(1,)).astype(np.int64)
 
         if self.transform:
@@ -33,25 +35,6 @@ class FakeDataset(torch.utils.data.Dataset):
 
     def __len__(self):
         return self.size
-
-
-class ResNet(ComposerModel):
-    def __init__(self):
-        super().__init__()
-        self.model = torchvision.models.resnet50(num_classes=62)
-        self.optim = torch.optim.Adam(self.model.parameters(), lr=0.01)
-
-    def forward(self, batch):
-        inputs, _ = batch
-        inputs = inputs[:, 0:3, :, :]
-        return self.model(inputs)
-
-    def loss(self, outputs, batch):
-        _, targets = batch
-        oh = F.one_hot(targets, num_classes=62)
-        oh = oh.squeeze().float()
-        return F.cross_entropy(outputs, oh)
-
 
 class CustomDataset(StreamingDataset):
     def __init__(self, local, remote, transform):
@@ -66,6 +49,38 @@ class CustomDataset(StreamingDataset):
             image = self.transform(image.astype(np.float32))
 
         return image, label
+
+
+# Models
+class UNetModule(torch.nn.Module):
+    def __init__(self, n_classes):
+        super().__init__()
+        self.n_classes = n_classes
+        self.backbone = MSUNet(name="unet50_fmow_full")
+        self.classifier = torch.nn.Conv2d(32, self.n_classes, (1, 1))
+
+    def forward(self, batch):
+        x = self.backbone(batch)
+        x = self.classifier(x)
+        x = x.mean((2, 3))
+        return x
+
+
+class UNet(ComposerModel):
+    def __init__(self):
+        super().__init__()
+        self.n_classes = 62
+        self.model = UNetModule(n_classes=self.n_classes)
+        self.optim = torch.optim.Adam(self.model.parameters(), lr=1e-3)
+
+    def forward(self, batch):
+        return self.model(batch[0])
+
+    def loss(self, outputs, batch):
+        _, targets = batch
+        oh = F.one_hot(targets, num_classes=self.n_classes)
+        oh = oh.squeeze().float()
+        return F.cross_entropy(outputs, oh)
 
 
 def main(args):
@@ -100,7 +115,7 @@ def main(args):
         sampler=sampler,
     )
 
-    model = ResNet()
+    model = UNet()
     trainer = Trainer(
         model=model,
         train_dataloader=train_loader,
