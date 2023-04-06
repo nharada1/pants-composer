@@ -14,7 +14,7 @@ from composer.utils import dist
 
 from streaming import StreamingDataset
 
-class ResNet18(ComposerModel):
+class ResNet(ComposerModel):
     def __init__(self):
         super().__init__()
         self.model = torchvision.models.resnet50(num_classes=63)
@@ -27,7 +27,7 @@ class ResNet18(ComposerModel):
 
     def loss(self, outputs, batch):
         _, targets = batch
-        oh = F.one_hot(targets, num_classes=63)
+        oh = F.one_hot(targets, num_classes=62)
         oh = oh.squeeze().float()
         return F.cross_entropy(outputs, oh)
 
@@ -57,7 +57,7 @@ def main(args):
     )
 
     transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Resize((256, 256)), transforms.Normalize(mean, std)]
+        [transforms.ToTensor(), transforms.Resize((256, 256)), transforms.RandomCrop((256, 256)), transforms.Normalize(mean, std)]
     )
     local_dir = args.local
     remote_dir = None
@@ -67,7 +67,7 @@ def main(args):
         trainset, batch_size=batch_size, num_workers=8
     )
 
-    model = ResNet18()
+    model = ResNet()
     trainer = Trainer(
         model=model,
         train_dataloader=train_loader,
